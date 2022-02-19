@@ -1,0 +1,4 @@
+
+1. clientX 와 clientY 는 windows창 전체에서 잡히는 좌표 // offsetX 와 offsetY 는 내가 설정한 범위 안에서 잡히는 좌표
+
+2. 
