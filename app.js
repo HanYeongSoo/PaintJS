@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d"); // canvasAPI를 위한 첫 선언
 const colors = document.getElementsByClassName("controls__color jsColors");
 const range = document.querySelector("#jsRange");
 const mode = document.querySelector("#jsMode");
+const saveBtn = document.getElementById("jsSave");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 660;
@@ -10,6 +11,8 @@ const CANVAS_SIZE = 660;
 canvas.width = CANVAS_SIZE; // canvas의 크기를 처음에 설정했던 canvas칸과 같게 설정해줘야 적용됨
 canvas.height = CANVAS_SIZE;
 
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 ctx.strokeStyle = INITIAL_COLOR; // 그림을 처음 시작 할 시 색상
 ctx.lineWidth = 2.5; // 그림을 처음 시작할 때 기본 굵기 설정
 
@@ -74,12 +77,27 @@ function handleCanvasClick() {
   }
 }
 
+function handleCM(event) {
+  event.preventDefault();
+}
+
+function handleSaveClick() {
+  const image = canvas.toDataURL(); // 아무것도 안쓰면 png타입으로 저장
+  // console.log(image);  image주소를 url형식으로 반환 확인
+  const link = document.createElement("a");
+  // console.log(link); a download링크 생성 확인
+  link.href = image; // 위에서 받아온 link주소를 image주소로 변환
+  link.download = "PaintJS[🎨]"; // 저장될 이미지의 이름 지정
+  link.click(); // save버튼 저장 시 저장되도록 설정
+}
+
 if (canvas) {
   canvas.addEventListener("mousemove", onMouseMove); // canvas안에서 움직이는 좌표
   canvas.addEventListener("mousedown", startPainting);
   canvas.addEventListener("mouseup", stopPainting);
   canvas.addEventListener("mouseleave", stopPainting);
   canvas.addEventListener("click", handleCanvasClick);
+  canvas.addEventListener("contextmenu", handleCM); // 우클릭 방지하는 함수
 }
 
 Array.from(colors).forEach((color) =>
@@ -92,4 +110,8 @@ if (range) {
 
 if (mode) {
   mode.addEventListener("click", handleModeClick);
+}
+
+if (saveBtn) {
+  saveBtn.addEventListener("click", handleSaveClick);
 }
